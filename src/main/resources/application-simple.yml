@@ -1,0 +1,39 @@
+# 简单配置文件 - 仅用于验证应用启动
+spring:
+  # 使用H2内存数据库
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  
+  # 禁用Redis
+  redis:
+    enabled: false
+  
+  # 禁用TDengine
+  tdengine:
+    enabled: false
+  
+  # 禁用MQTT
+  mqtt:
+    enabled: false
+
+# 应用配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# 日志配置
+logging:
+  level:
+    root: WARN
+    com.iot.temphumidity: INFO
+    org.springframework: WARN

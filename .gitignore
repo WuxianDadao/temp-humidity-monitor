@@ -1,0 +1,114 @@
+# Compiled class files
+*.class
+
+# Build output
+target/
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test output
+*.class
+*.out
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+.attach_*
+
+# PostgreSQL/TDengine test files
+PostgreSQLSimpleTest.*
+TDengineActualTest.*
+TDengineBasicTest.*
+TDengineConnectionTest.*
+TDengineRESTTest.*
+TDengineSimpleTest.*
+TDengine_连接测试报告.md
+TestCompile.*
+TestDatabaseConnection.*
+TestIotDbConnection.*
+TestPostgreSQLConnection.*
+TestProjectCompilation.*
+TestSensorDataController.java
+TestTdengineConnection.*
+
+# Build scripts and reports
+analyze_compile_errors.py
+cleanup_and_recreate.py
+compile-check.sh
+complete-fix.sh
+controller-implementation-checklist.md
+create_db_simple.sql
+create_missing_dtos.py
+docker-compose-tdengine-simple.yml
+docker-compose-tdengine.yml
+docker-compose.yml
+docs/
+files_to_fix.txt
+final-fixes.sh
+final_fix_script.sh
+find_missing_classes.py
+fix-all-errors.sh
+fix-all-final.sh
+fix_all_missing_classes.py
+fix-compilation-errors.sh
+fix-enum-errors.sh
+fix-method-names.sh
+fix-sensor-tag.sh
+fix_truncated_files.py
+generate_dtos.py
+init/
+init_postgresql.sql
+init-sql/
+jpa_files_to_fix.txt
+postgresql-schema-design.md
+report-service-completion.py
+report_tasks_2_3_completion.py
+run-tdengine-test.sh
+sensor-data-model-design.md
+service-implementation-checklist.md
+service-implementation-check-report.md
+sql/
+start-and-test.sh
+start-app.sh
+start-postgres-local.sh
+tdengine-connection-test-report.md
+tdengine-connection-validation.sh
+tdengine-implementation-checklist.md
+tdengine-schema-detailed.md
+test-lombok.java
+test-start.sh
+test-startup.sh
+test-startup-simple.sh
+test-tdengine-config.sh
+test-tdengine-connection.java
+test-tdengine-integration.sh
+test-tdengine-simple.sql
+test-tdengine.sql
+testing-implementation-checklist.md
+update-validation-imports.py
+verify_tables.sh
+verify-tdengine-code.py
+verify_tdengine_config.py
+项目编译测试报告.md
+
+# App startup log
+app.log
+app_startup.log

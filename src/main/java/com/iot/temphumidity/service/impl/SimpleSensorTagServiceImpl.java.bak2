@@ -1,0 +1,138 @@
+package com.iot.temphumidity.service.impl;
+
+import com.iot.temphumidity.dto.sensor.SensorTagCreateDTO;
+import com.iot.temphumidity.dto.sensor.SensorTagDTO;
+import com.iot.temphumidity.dto.sensor.SensorTagUpdateDTO;
+import com.iot.temphumidity.entity.SensorTag;
+import com.iot.temphumidity.exception.ResourceNotFoundException;
+import com.iot.temphumidity.mapper.SensorTagMapper;
+import com.iot.temphumidity.repository.SensorTagRepository;
+import com.iot.temphumidity.service.SensorTagService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class SimpleSensorTagServiceImpl implements SensorTagService {
+    
+    private final SensorTagRepository sensorTagRepository;
+    private final SensorTagMapper sensorTagMapper;
+    
+    @Override
+    @Transactional
+    public SensorTagDTO createSensorTag(SensorTagCreateDTO createDTO) {
+        log.info("创建传感器标签: {}", createDTO.getTagName());
+        
+        // 将DTO转换为实体
+        SensorTag sensorTag = sensorTagMapper.toEntity(createDTO);
+        
+        // 设置默认值
+        if (sensorTag.getStatus() == null) {
+            sensorTag.setStatus(SensorTag.TagStatus.IN_STOCK);
+        }
+        
+        // 保存到数据库
+        SensorTag savedSensorTag = sensorTagRepository.save(sensorTag);
+        
+        // 返回DTO
+        return sensorTagMapper.toDTO(savedSensorTag);
+    }
+    
+    @Override
+    @Transactional
+    public SensorTagDTO updateSensorTag(Long tagId, SensorTagUpdateDTO updateDTO) {
+        log.info("更新传感器标签: {}", tagId);
+        
+        // 查找传感器标签
+        SensorTag sensorTag = sensorTagRepository.findById(tagId)
+                .orElseThrow(() -> new ResourceNotFoundException("传感器标签", "id", tagId));
+        
+        // 更新字段
+        if (updateDTO.getTagName() != null) {
+            sensorTag.setTagName(updateDTO.getTagName());
+        }
+        if (updateDTO.getSerialNumber() != null) {
+            sensorTag.setSerialNumber(updateDTO.getSerialNumber());
+        }
+        if (updateDTO.getSensorType() != null) {
+            sensorTag.setSensorType(updateDTO.getSensorType());
+        }
+        if (updateDTO.getDeviceId() != null) {
+            sensorTag.setDeviceId(updateDTO.getDeviceId());
+        }
+        
+        // 保存更新
+        SensorTag updatedSensorTag = sensorTagRepository.save(sensorTag);
+        
+        // 返回DTO
+        return sensorTagMapper.toDTO(updatedSensorTag);
+    }
+    
+    @Override
+    public SensorTagDTO getSensorTagById(Long tagId) {
+        log.info("获取传感器标签详情: {}", tagId);
+        
+        SensorTag sensorTag = sensorTagRepository.findById(tagId)
+                .orElseThrow(() -> new ResourceNotFoundException("传感器标签", "id", tagId));
+        
+        return sensorTagMapper.toDTO(sensorTag);
+    }
+    
+    @Override
+    public List<SensorTagDTO> getSensorTagsByDevice(Long deviceId) {
+        log.warn("SensorTag实体没有deviceId字段，方法getSensorTagsByDevice暂时返回空列表");
+        // TODO: 根据实际业务逻辑调整
+        // SensorTag实体没有deviceId字段，而是通过gateway对象关联到Gateway实体
+        // 在物联网系统中，传感器通常与网关关联
+        return new ArrayList<>();
+    }
+    
+    @Override
+    public Page<SensorTagDTO> getSensorTags(Pageable pageable) {
+        log.info("分页查询传感器标签列表");
+        
+        Page<SensorTag> sensorTagPage = sensorTagRepository.findAll(pageable);
+        
+        return sensorTagPage.map(sensorTagMapper::toDTO);
+    }
+    
+    @Override
+    @Transactional
+    public void deleteSensorTag(Long tagId) {
+        log.info("删除传感器标签: {}", tagId);
+        
+        // 检查是否存在
+        if (!sensorTagRepository.existsById(tagId)) {
+            throw new ResourceNotFoundException("传感器标签", "id", tagId);
+        }
+        
+        // 删除
+        sensorTagRepository.deleteById(tagId);
+    }
+    
+    @Override
+    public List<SensorTagDTO> getAllSensorTags() {
+        log.info("获取所有传感器标签");
+        
+        List<SensorTag> sensorTags = sensorTagRepository.findAll();
+        
+        return sensorTags.stream()
+                .map(sensorTagMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    
+    @Override
+    @Transactional
+}

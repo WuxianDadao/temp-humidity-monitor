@@ -1,0 +1,33 @@
+# 测试配置文件 - 禁用数据库连接
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  
+  # 禁用Redis
+  redis:
+    host: localhost
+    port: 6379
+    enabled: false
+  
+  # 禁用TDengine
+  tdengine:
+    enabled: false
+
+# 禁用MQTT
+mqtt:
+  enabled: false
+
+# 日志配置
+logging:
+  level:
+    com.iot.temphumidity: DEBUG
+    org.springframework: INFO

@@ -1,0 +1,34 @@
+# 无数据库配置文件 - 仅用于验证应用启动
+spring:
+  # 禁用所有数据库
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    enabled: false
+  
+  # 禁用Redis
+  redis:
+    enabled: false
+  
+  # 禁用TDengine
+  tdengine:
+    enabled: false
+  
+  # 禁用MQTT
+  mqtt:
+    enabled: false
+
+# 应用配置
+server:
+  port: 8080
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.iot.temphumidity: INFO
+    org.springframework: INFO
