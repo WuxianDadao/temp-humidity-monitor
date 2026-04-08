@@ -60,7 +60,7 @@ create_missing_dtos.py
 docker-compose-tdengine-simple.yml
 docker-compose-tdengine.yml
 docker-compose.yml
-docs/
+
 files_to_fix.txt
 final-fixes.sh
 final_fix_script.sh
