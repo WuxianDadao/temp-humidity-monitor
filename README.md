@@ -1,122 +1,111 @@
-# 物联网温湿度监测系统
+# 物联网温湿度实时监测系统
 
 ## 🎯 项目概述
-基于Spring Boot的物联网温湿度实时监测系统，采用多数据库架构处理不同类型的数据。
+
+基于 Spring Boot 的物联网温湿度实时监测系统，采用多数据库架构处理不同类型的数据，支持 MQTT 协议设备接入。
+
+**GitHub**: https://github.com/WuxianDadao/temp-humidity-monitor
 
 ## 🏗️ 技术架构
-- **后端框架**: Spring Boot 3.2.4
-- **前端框架**: Vue.js (待添加)
-- **数据库架构**:
-  - **PostgreSQL**: 业务数据 (用户、设备、配置)
-  - **TDengine**: 时序数据 (传感器读数)
-  - **Redis**: 缓存和实时状态
-- **消息协议**: MQTT (设备通信)
 
-## 📊 当前状态
-**项目阶段**: TDengine集成完成
-**最后更新**: 2026-03-27 16:02
-**状态**: ✅ Spring Boot骨架 + TDengine配置完成
+| 组件 | 技术选型 |
+|------|---------|
+| 后端框架 | Spring Boot 3.2.4 |
+| 时序数据库 | TDengine 3.4.0.9 |
+| 关系数据库 | PostgreSQL |
+| 缓存 | Redis |
+| 消息协议 | MQTT |
+| API文档 | Swagger/OpenAPI |
 
-## 🚀 已完成工作
+## 📊 项目状态
 
-### ✅ 1. Spring Boot项目骨架
-- 创建了完整的Maven项目结构
-- 配置了多数据库依赖 (PostgreSQL + TDengine + Redis)
-- 设置了应用主类和基础配置
+- **进度**: ~35%
+- **阶段**: Service层业务实现阶段
+- **编译状态**: ✅ BUILD SUCCESS
+- **运行状态**: ✅ 8080端口运行中
 
-### ✅ 2. TDengine集成
-- 添加TDengine JDBC驱动依赖
-- 创建TDengine配置类 (`TDengineConfig.java`)
-- 自动创建数据库和超表结构
-- 配置连接池和数据源
+## 🚀 快速开始
 
-### ✅ 3. 多数据库配置
-- **PostgreSQL**: 业务数据存储
-- **TDengine**: 传感器时序数据存储
-- **Redis**: 实时状态缓存
-- 完整的`application.yml`配置文件
-
-### ✅ 4. 测试和验证
-- 创建TDengine测试服务 (`TDengineTestService.java`)
-- 创建REST测试接口 (`TDengineTestController.java`)
-- 支持连接测试、版本查询、数据操作
-
-## 🔧 项目结构
-```
-spring-boot-temp-humidity/
-├── src/main/java/com/iot/temphumidity/
-│   ├── TempHumidityMonitorApplication.java  # 应用主类
-│   ├── config/
-│   │   └── TDengineConfig.java              # TDengine配置
-│   ├── controller/
-│   │   └── TDengineTestController.java      # 测试接口
-│   └── service/
-│       └── TDengineTestService.java         # 测试服务
-├── src/main/resources/
-│   └── application.yml                      # 应用配置
-└── pom.xml                                  # Maven配置
+### 启动应用
+```bash
+cd temp-humidity-monitor
+mvn package -Dmaven.test.skip=true
+setsid java -jar target/temp-humidity-monitor-1.0.0.jar &
 ```
 
-## 📋 测试接口
-应用启动后，可以通过以下接口测试TDengine:
+### 验证运行
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/api/devices
+# 返回 401 表示正常运行（需要认证）
+```
 
-1. **连接状态**: `GET /api/tdengine/status`
-2. **完整测试**: `POST /api/tdengine/test`
-3. **数据库信息**: `GET /api/tdengine/database-info`
-4. **创建测试数据**: `POST /api/tdengine/test-data`
-5. **健康检查**: `GET /api/tdengine/health`
+## 📁 项目结构
 
-## 🎯 下一步任务
+```
+src/main/java/com/iot/temphumidity/
+├── config/           # 配置类（CORS、JPA、Redis、MQTT、TDengine）
+├── controller/        # REST API控制器（7个Controller，70+端点）
+├── dto/              # 数据传输对象（57个类）
+├── entity/           # JPA实体类（37个）
+├── enums/            # 枚举类（17个）
+├── exception/         # 异常类
+├── mapper/           # MyBatis Mapper
+├── repository/       # Spring Data JPA Repository（18个）
+├── service/          # 服务接口和实现
+└── converter/        # 数据转换器
+```
 
-### 🔴 高优先级
-1. **测试TDengine连接** - 验证数据库服务是否正常
-2. **设计TDengine超表Schema** - 完善传感器数据结构
-3. **设计PostgreSQL Schema** - 业务数据表设计
+## 📚 文档
 
-### 🟡 中优先级
-4. **创建传感器数据模型** - Java实体类
-5. **实现MQTT客户端** - 设备数据接收
-6. **实现数据存储服务** - 双数据库写入
+| 文档 | 说明 |
+|------|------|
+| `PROJECT_OVERVIEW.md` | **项目概况** - 完整需求、进度、待办事项 |
+| `docs/postgresql-schema-design.md` | PostgreSQL 数据库Schema设计（24张表） |
+| `docs/tdengine-schema-design.md` | TDengine 时序数据库Schema设计（4个超表） |
 
-### 🔵 低优先级
-7. **创建REST API** - 数据查询接口
-8. **实现报警逻辑** - 阈值检测
-9. **添加监控和日志** - 系统监控
+## 🔴 阻塞问题
 
-## 🐳 快速开始
+项目存在**架构冲突**：两套并行的 Entity/Repository 定义导致 Service 层被禁用。
 
-### 1. 环境要求
+**解决方案**：需要统一 `entity.*` / `repository.*` 与 `entity.postgresql.*` / `repository.postgresql.*` 两套包的架构。
+
+详见 `PROJECT_OVERVIEW.md` 中的「阻塞问题」章节。
+
+## 📋 待完成任务
+
+1. **P0**: 统一Entity/Repository架构（阻塞问题）
+2. **P1**: 完成Service业务实现
+3. **P1**: 单元测试编写
+4. **P2**: MQTT消息处理器实现
+5. **P2**: 报警规则引擎完善
+6. **P3**: 前端界面开发
+
+## 🛠️ 开发环境依赖
+
 - Java 17+
 - Maven 3.8+
-- PostgreSQL 14+
-- TDengine 3.0+
-- Redis 6+
-
-### 2. 启动服务
-```bash
-# 构建项目
-mvn clean package
-
-# 运行应用
-java -jar target/temp-humidity-monitor-1.0.0.jar
-```
-
-### 3. 测试TDengine
-```bash
-# 测试连接
-curl http://localhost:8080/api/tdengine/status
-
-# 运行完整测试
-curl -X POST http://localhost:8080/api/tdengine/test
-```
+- PostgreSQL (localhost:5432)
+- TDengine (localhost:6030)
+- Redis (localhost:6379)
+- MQTT Broker (localhost:1883)
 
 ## 📝 配置说明
-详细配置见 `src/main/resources/application.yml`
 
-## 🔗 相关项目
-- **DeerFlow**: 项目管理和决策系统
-- **TDengine**: 时序数据库
-- **Spring Boot**: 后端框架
+数据库连接配置在 `src/main/resources/application.yml`：
+
+```yaml
+spring:
+  datasource:
+    postgresql:
+      url: jdbc:postgresql://localhost:5432/iot_db
+      username: iot_user
+      password: your_password
+  data:
+    redis:
+      host: localhost
+      port: 6379
+```
 
 ---
-*最后更新: 2026-03-27 16:02*
+
+*最后更新: 2026-04-08*
