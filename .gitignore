@@ -78,7 +78,6 @@ init/
 init_postgresql.sql
 init-sql/
 jpa_files_to_fix.txt
-postgresql-schema-design.md
 report-service-completion.py
 report_tasks_2_3_completion.py
 run-tdengine-test.sh
